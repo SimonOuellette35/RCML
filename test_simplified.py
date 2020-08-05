@@ -74,12 +74,14 @@ def generateData(N):
     return np.array(X), np.array(Y)
 
 N = 1000
+NUM_EPOCHS = 30
 X, Y = generateData(N)
 
 X = torch.from_numpy(X)
 Y = torch.from_numpy(Y)
 
-for epoch in range(500):
+preds = []
+for epoch in range(NUM_EPOCHS):
     avg_loss = 0.
     for i in range(N):
         coeffs = metaModel.getCoeffsList()
@@ -88,6 +90,9 @@ for epoch in range(500):
         taskEstimate = metaModel.predictMeta(X[i])
         metaModel.applyCoeffs(taskEstimate)
         y_pred = metaModel.predictTask(X[i])
+
+        if epoch == NUM_EPOCHS - 1:
+            preds.append(y_pred[0])
 
         metaModel.taskOptimizer.zero_grad()
 
@@ -108,3 +113,7 @@ for epoch in range(500):
 
     avg_loss /= float(N)
     print("Epoch %s loss = %s" % (epoch+1, avg_loss))
+
+plt.plot(preds[:100])
+plt.plot(Y[:100])
+plt.show()

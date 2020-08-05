@@ -26,7 +26,7 @@ class Fhow_RNN(torch.nn.Module):
         output = []
         for params in param_list:
             parameters = np.reshape(params.cpu().data.numpy(), [-1])
-            print("getCoeffsList: num params = ", len(parameters))
+            #print("getCoeffsList: num params = ", len(parameters))
             for p in parameters:
                 output.append(p)
 
